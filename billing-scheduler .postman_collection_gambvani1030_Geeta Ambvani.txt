@@ -1,0 +1,693 @@
+{
+	"info": {
+		"_postman_id": "e75f5be8-b270-4cd9-9dad-9499d42c198f",
+		"name": "billing-scheduler Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Hello World",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful Get request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"});\r",
+							"\r",
+							"//  Response headers: Content type header check\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create SplitEvent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful Post request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response includes valid data and have a body\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"//Check the startDate of splitEvent\r",
+							"pm.test(\"Check startDate of splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.startDate).to.eql(\"2022-01-06T00:00:00.000Z\");\r",
+							"});\r",
+							"\r",
+							"//Check the endDate of splitEvent\r",
+							"pm.test(\"Check EndDate of splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.endDate).to.eql(\"2022-04-15T00:00:00.000Z\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Check the amount of splitEvent\r",
+							"pm.test(\"Check amount of splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.amount).to.eql(1523.45);\r",
+							"});\r",
+							"\r",
+							"//  Response headers: Content type header check\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2022-01-06\",\r\n    \"endDate\": \"2022-04-15\",\r\n    \"amount\": 1523.45\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/billingPeriod",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"billingPeriod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SplitEvents",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful Get request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content Check Test\" ,function()\r",
+							"{\r",
+							"var jsonData = \"content\";    \r",
+							"pm.response.text().includes(jsonData);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error Check Test\" ,function()\r",
+							"{\r",
+							"pm.response.to.not.be.error;\r",
+							"pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"//Check the startDate of first splitEvent\r",
+							"pm.test(\"Check startDate of first splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.content[0].startDate).to.eql(\"2022-01-06T00:00:00.000Z\");\r",
+							"});\r",
+							"\r",
+							"//Check the endDate of first splitEvent\r",
+							"pm.test(\"Check EndDate of first splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.content[0].endDate).to.eql(\"2022-04-15T00:00:00.000Z\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Check the amount of first splitEvent\r",
+							"pm.test(\"Check amount of first splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.content[0].amount).to.eql(1523.45);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Checks whether the response has a valid response Body\r",
+							"pm.test(\"response includes valid and have a body\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"//  Response headers: Content type header check\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/billingPeriod/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"billingPeriod",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Another SplitEvent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful Post request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response includes valid data and have a body\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"//Check the startDate of splitEvent\r",
+							"pm.test(\"Check startDate of splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.startDate).to.eql(\"2022-04-03T00:00:00.000Z\");\r",
+							"});\r",
+							"\r",
+							"//Check the endDate of splitEvent\r",
+							"pm.test(\"Check EndDate of splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.endDate).to.eql(\"2022-04-15T00:00:00.000Z\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Check the amount of splitEvent\r",
+							"pm.test(\"Check amount of splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.amount).to.eql(523.45);\r",
+							"});\r",
+							"\r",
+							"//  Response headers: Content type header check\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2022-04-03\",\r\n    \"endDate\": \"2022-04-15\",\r\n    \"amount\": 523.45\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/billingPeriod",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"billingPeriod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SplitEvents",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful Get request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content Check Test\" ,function()\r",
+							"{\r",
+							"var jsonData = \"content\";    \r",
+							"pm.response.text().includes(jsonData);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error Check Test\" ,function()\r",
+							"{\r",
+							"pm.response.to.not.be.error;\r",
+							"pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Checks whether the response has a valid response Body\r",
+							"pm.test(\"response includes valid and have a body\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"//  Response headers: Content type header check\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/billingPeriod/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"billingPeriod",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Combine SplitEvent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Test to validate if no data is found or id ,startDate , endDate are returned on succesful request\r",
+							"pm.test(\"Testing if required values are generated\", function () {\r",
+							"\r",
+							"    result = false;\r",
+							"    if(pm.response.text().includes(\"No Event is found\"))\r",
+							"    {\r",
+							"     result = true;   \r",
+							"    }\r",
+							"    else \r",
+							"    {\r",
+							"    var arr = [\"id\", \"startDate\", \"endDate\"];\r",
+							"    responseText = pm.response.text();\r",
+							"\r",
+							"    arr.forEach((x) => {\r",
+							"      if (responseText.includes(x)){\r",
+							"      result = true;\r",
+							"    }\r",
+							"    });\r",
+							"    }\r",
+							"    pm.expect(result).to.be.true;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Test to validate if the status returned in response is success(200)\r",
+							"pm.test(\" Fail Status Check Test\" ,function()\r",
+							"{\r",
+							"pm.response.to.not.have.status(500);\r",
+							"});\r",
+							"\r",
+							"//This test is performed to check whether Success is returned in the Response\r",
+							"pm.test(\"Success Check Test\" ,function()\r",
+							"{\r",
+							"var data = \"success\";    \r",
+							"pm.response.text().includes(data);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Checks whether the response has a valid response Body\r",
+							"pm.test(\"response includes valid and have a body\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Test to validate if the status returned in response is success(200)\r",
+							"pm.test(\" Update Check Test\" ,function()\r",
+							"{\r",
+							"pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//  Response headers: Content type header check\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startEventId\": \"96273cb4-5757-47c9-b2dc-135df14e5ff8\",\r\n    \"endEventId\":\"531b0aff-af8d-4ca9-88c7-921163c66277\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/billingPeriod/combine",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"billingPeriod",
+						"combine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Another SplitEvent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful Post request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response includes valid data and have a body\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"//Check the startDate of splitEvent\r",
+							"pm.test(\"Check startDate of splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.startDate).to.eql(\"2022-04-02T00:00:00.000Z\");\r",
+							"});\r",
+							"\r",
+							"//Check the endDate of splitEvent\r",
+							"pm.test(\"Check EndDate of splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.endDate).to.eql(\"2022-04-10T00:00:00.000Z\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Check the amount of splitEvent\r",
+							"pm.test(\"Check amount of splitEvent\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.amount).to.eql(545.45);\r",
+							"});\r",
+							"\r",
+							"//  Response headers: Content type header check\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2022-04-02\",\r\n    \"endDate\": \"2022-04-10\",\r\n    \"amount\": 545.45\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/billingPeriod",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"billingPeriod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Extend SplitEvent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//This test is performed to check whether Success is returned in the Response\r",
+							"pm.test(\"Success Check Test\" ,function()\r",
+							"{\r",
+							"var data = \"success\";    \r",
+							"pm.response.text().includes(data);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Checks whether the response has a valid response Body\r",
+							"pm.test(\"response includes valid and have a body\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Test to validate if the status returned in response is success(200)\r",
+							"pm.test(\" Update Check Test\" ,function()\r",
+							"{\r",
+							"pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//  Response headers: Content type header check\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"body\":\r\n{ \"id\": \"92a0deee-6187-43a6-8020-f0a8680ba4f6\",\r\n \"endDate\": \"2022-04-20\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/billingPeriod",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"billingPeriod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete SplitEvent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//This test is performed to check whether Request has an ID\r",
+							"pm.test(\"Request Param Test\" ,function()\r",
+							"{\r",
+							"\r",
+							"var ref = pm.request.url.query;\r",
+							"result = false;\r",
+							"if(ref == null)\r",
+							"{\r",
+							"   result = false;\r",
+							"}\r",
+							"else \r",
+							"{\r",
+							"    result = true;\r",
+							"}\r",
+							"pm.expect(result).to.be.true;\r",
+							"});\r",
+							"pm.test(\" Update Check Test\" ,function()\r",
+							"{\r",
+							"pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//This test is performed to check whether Success is returned in the Response\r",
+							"pm.test(\"Success Check Test\" ,function()\r",
+							"{\r",
+							"var data = \"success\";    \r",
+							"pm.response.text().includes(data);\r",
+							"});\r",
+							"\r",
+							"//  Response headers: Content type header check\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/billingPeriod/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"billingPeriod",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "92a0deee-6187-43a6-8020-f0a8680ba4f6"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Response time is less than 500ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(500);",
+					"});",
+					""
+				]
+			}
+		}
+	]
+}
